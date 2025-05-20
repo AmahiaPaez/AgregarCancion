@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class Controlador {
 
     @Autowired
-    private ServicioCancion cancionService;
+    private ServicioCancion cancionServicio;
 
     @GetMapping
     public String listarCanciones(Model model) {
-        model.addAttribute("listaCanciones", cancionService.obtenerTodas());
+        model.addAttribute("listaCanciones", cancionServicio.obtenerTodas());
         return "canciones"; 
     }
 
@@ -33,14 +33,14 @@ public class Controlador {
         if (resultado.hasErrors()) {
             return "agregarCancion";
         }
-        cancionService.agregarCancion(cancion);
+        cancionServicio.agregarCancion(cancion);
         return "redirect:/canciones";
     }
 
 
     @GetMapping("/formulario/editar/{idCancion}")
     public String formularioEditarCancion(@PathVariable("idCancion") Long idCancion, Model model) {
-        Cancion cancion = cancionService.obtenerPorId(idCancion);
+        Cancion cancion = cancionServicio.obtenerPorId(idCancion);
         if (cancion != null) {
             model.addAttribute("cancion", cancion);
             return "editar"; 
@@ -49,16 +49,22 @@ public class Controlador {
     }
 
     @PostMapping("/procesa/editar/{idCancion}")
-    public String procesarEditarCancion(@PathVariable("idCancion") Long idCancion,
-                                        @ModelAttribute("cancion") @Valid Cancion cancion,
-                                        BindingResult resultado) {
+    public String procesarEditarCancion(@PathVariable("idCancion") Long idCancion,  @ModelAttribute("cancion") @Valid Cancion cancion, BindingResult resultado) {
         if (resultado.hasErrors()) {
             return "editar";
         }
         cancion.setId(idCancion);
-        cancionService.actualizarCancion(cancion);
+        cancionServicio.actualizarCancion(cancion);
         return "redirect:/canciones";
     }
+    
+    @DeleteMapping("/procesa/eliminar/{id}")
+    public String eliminarCancion(@PathVariable Long id) {
+        cancionServicio.eliminarCancion(id);
+        return "redirect:/canciones";
+    }
+
+
 }
 
  

@@ -30,5 +30,10 @@ public class ServicioCancion{
     public Cancion obtenerPorId(Long id) {
         return cancionRepo.findById(id).orElseThrow(() -> new RuntimeException("Canción no encontrada")); //sino esta entonces una excepcion
     }
+    
+    public void eliminarCancion(Long id) {
+        cancionRepo.deleteById(id);
+    }
+
 
 }

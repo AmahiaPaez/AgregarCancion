@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "canciones")
 public class Cancion {
     
     @Id
